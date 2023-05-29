@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import http from 'http';
 import bodyParser from 'body-parser';
@@ -17,12 +19,16 @@ app.use(cookieParser());
 app.use(bodyParser.json())
 
 const server = http.createServer(app)
+const port = process.env.SERVER_PORT
 
-server.listen(8080, () => {
-    console.log("Server running on http://localhost:8080");
+server.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 })
 
-const MONGO_URL = "mongodb+srv://restapi_user:restapi123@cluster0.cipi03e.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_USER = process.env.MONGO_USER;
+const MONGO_PASSWORD = process.env.MONGO_PASSWORD;
+
+const MONGO_URL = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.cipi03e.mongodb.net/?retryWrites=true&w=majority`;
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
